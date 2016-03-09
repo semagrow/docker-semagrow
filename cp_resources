@@ -1,0 +1,13 @@
+#!/bin/sh
+
+SEMAGROW_HOME = "$1"
+export SEMAGROW_HOME
+
+if [ -f "/etc/default/semagrow/metadata.ttl" ]; then
+    echo "semagrow resources already exist. Not copying."
+else
+    echo "copying resources to /etc/default/semagrow"
+    cp -pr $SEMAGROW_HOME/resources/* /etc/default/semagrow/
+fi
+
+exit 0
