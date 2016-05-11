@@ -20,4 +20,4 @@ SemaGrow configuration files are located at
 
 to add external configuration files run semagrow as
 
-    docker run semagrow -p <host_port>:8080 -v <local_dir>:/etc/default/semagrow semagrow
+    docker run -p <host_port>:8080 -v <local_dir>:/etc/default/semagrow semagrow
