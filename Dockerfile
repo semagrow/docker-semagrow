@@ -2,6 +2,7 @@ FROM maven:3.3.3-jdk-8
 
 MAINTAINER Yiannis Mouchakis <gmouchakis@iit.demokritos.gr>
 
+ENV WORKING_DIR /
 
 ENV SEMAGROW_HOME /opt/semagrow
 
@@ -11,14 +12,24 @@ RUN mkdir -p "$SEMAGROW_HOME"
 
 RUN git clone https://github.com/semagrow/semagrow.git && \
     cd semagrow && \
-    git checkout devel-bde && \
-    mvn clean package -DskipTests -Psemagrow-stack-webapp-distribution && \
+    mvn clean install -DskipTests -Psemagrow-stack-webapp-distribution && \
     cp /semagrow/http/target/semagrow-http-*-distribution.zip $SEMAGROW_HOME && \
     cd $SEMAGROW_HOME && \
-    rm -r /semagrow && \
     unzip semagrow-http-*-distribution.zip && \
-    rm semagrow-http-*-distribution.zip && \
-    cd /
+    unzip domains/localhost/webapps/SemaGrow.war -d domains/localhost/webapps/SemaGrow/ && \
+    cd / && \
+    git clone https://github.com/semagrow/semagrow-quetsal.git && \
+    cd semagrow-quetsal && \
+    mvn clean package && \
+    cp target/semagrow-quetsal-1.5.jar $SEMAGROW_HOME/domains/localhost/webapps/SemaGrow/WEB-INF/lib/ && \
+    mvn dependency:copy-dependencies && \
+    cp target/dependency/*.jar $SEMAGROW_HOME/domains/localhost/webapps/SemaGrow/WEB-INF/lib/ && \
+    cd / && \
+    rm -r semagrow && \
+    rm -r semagrow-quetsal && \
+    rm $SEMAGROW_HOME/semagrow-http-*-distribution.zip && \
+    rm $SEMAGROW_HOME/domains/localhost/webapps/SemaGrow.war
+    
 
 COPY cp_resources /usr/local/bin/
 
