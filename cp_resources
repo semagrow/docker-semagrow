@@ -4,10 +4,17 @@ SEMAGROW_HOME = "$1"
 export SEMAGROW_HOME
 
 if [ -f "/etc/default/semagrow/metadata.ttl" ]; then
-    echo "semagrow resources already exist. Not copying."
+    echo "metadata.ttl already exists. Not copying."
 else
-    echo "copying resources to /etc/default/semagrow"
-    cp -pr $SEMAGROW_HOME/resources/* /etc/default/semagrow/
+    echo "copying metadata.ttl to /etc/default/semagrow"
+    cp -pr $SEMAGROW_HOME/resources/metadata.ttl /etc/default/semagrow/
+fi
+
+if [ -f "/etc/default/semagrow/repository.ttl" ]; then
+    echo "repository.ttl already exists. Not copying."
+else
+    echo "copying repository.ttl to /etc/default/semagrow"
+    cp -pr $SEMAGROW_HOME/resources/repository.ttl /etc/default/semagrow/
 fi
 
 exit 0
