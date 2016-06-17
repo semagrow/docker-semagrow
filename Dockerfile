@@ -21,7 +21,7 @@ RUN git clone https://github.com/semagrow/semagrow.git && \
     git clone https://github.com/semagrow/semagrow-quetsal.git && \
     cd semagrow-quetsal && \
     mvn clean package && \
-    cp target/semagrow-quetsal-1.5.jar $SEMAGROW_HOME/domains/localhost/webapps/SemaGrow/WEB-INF/lib/ && \
+    cp target/semagrow-quetsal-*.jar $SEMAGROW_HOME/domains/localhost/webapps/SemaGrow/WEB-INF/lib/ && \
     mvn dependency:copy-dependencies && \
     cp target/dependency/*.jar $SEMAGROW_HOME/domains/localhost/webapps/SemaGrow/WEB-INF/lib/ && \
     cd / && \
