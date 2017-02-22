@@ -12,24 +12,10 @@ RUN mkdir -p "$SEMAGROW_HOME"
 
 RUN git clone https://github.com/semagrow/semagrow.git && \
     cd semagrow && \
-    mvn clean install -DskipTests -Psemagrow-stack-webapp-distribution && \
-    cp /semagrow/http/target/semagrow-http-*-distribution.zip $SEMAGROW_HOME && \
-    cd $SEMAGROW_HOME && \
-    unzip semagrow-http-*-distribution.zip && \
-    unzip domains/localhost/webapps/SemaGrow.war -d domains/localhost/webapps/SemaGrow/ && \
-    cd / && \
-    git clone https://github.com/semagrow/semagrow-quetsal.git && \
-    cd semagrow-quetsal && \
-    mvn clean package && \
-    cp target/semagrow-quetsal-*.jar $SEMAGROW_HOME/domains/localhost/webapps/SemaGrow/WEB-INF/lib/ && \
-    mvn dependency:copy-dependencies && \
-    cp target/dependency/*.jar $SEMAGROW_HOME/domains/localhost/webapps/SemaGrow/WEB-INF/lib/ && \
-    cd / && \
-    rm -r semagrow && \
-    rm -r semagrow-quetsal && \
-    rm $SEMAGROW_HOME/semagrow-http-*-distribution.zip && \
-    rm $SEMAGROW_HOME/domains/localhost/webapps/SemaGrow.war
-    
+    mvn clean package -P tomcat-bundle && \
+    tar xvf assembly/target/semagrow-*-tomcat-bundle.tar.gz -C $SEMAGROW_HOME && \
+    cd .. && \
+    rm -r semagrow
 
 COPY cp_resources /usr/local/bin/
 
