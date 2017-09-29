@@ -3,7 +3,7 @@ version: '2'
 services:
 
   semagrow:                                                                                                                                                                                                                                  
-    image: semagrow/semagrow                                                                                                                                                                                         
+    image: semagrow/semagrow:2.0.1                                                                                                                                                                                         
     volumes:                                                                                                                                                                                                                                 
       - /path/to/config:/etc/default/semagrow
 
