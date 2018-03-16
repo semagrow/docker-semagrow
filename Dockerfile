@@ -12,6 +12,7 @@ RUN mkdir -p "$SEMAGROW_HOME"
 
 RUN git clone https://github.com/semagrow/semagrow.git && \
     cd semagrow && \
+    git checkout feat-increase-tranfer-query-cost && \
     mvn clean package -P tomcat-bundle && \
     tar xvf assembly/target/semagrow-*-tomcat-bundle.tar.gz -C $SEMAGROW_HOME && \
     cd .. && \
