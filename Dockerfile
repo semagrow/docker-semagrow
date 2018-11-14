@@ -1,28 +1,29 @@
-FROM maven:3.3.3-jdk-8
+FROM maven:3.3.3-jdk-8 as build
 
 MAINTAINER Yiannis Mouchakis <gmouchakis@iit.demokritos.gr>
 
-ENV WORKING_DIR /
-
-ENV SEMAGROW_HOME /opt/semagrow
-
-ENV PATH="$SEMAGROW_HOME/bin:$PATH"
-
-RUN mkdir -p "$SEMAGROW_HOME"
+WORKDIR /
 
 RUN git clone https://github.com/semagrow/semagrow.git && \
     cd semagrow && \
-    mvn clean package -P tomcat-bundle && \
-    tar xvf assembly/target/semagrow-*-tomcat-bundle.tar.gz -C $SEMAGROW_HOME && \
-    cd .. && \
-    rm -r semagrow
+    mvn clean package -P tomcat-bundle
 
-COPY cp_resources /usr/local/bin/
+FROM openjdk:8-jre-alpine
 
-RUN chmod +x /usr/local/bin/cp_resources
+ENV SEMAGROW_HOME /opt/semagrow
+ENV CATALINA_HOME $SEMAGROW_HOME
+ENV PATH $CATALINA_HOME/bin:$PATH
 
-RUN mkdir -p /etc/default/semagrow
+WORKDIR /
+COPY --from=build semagrow/assembly/target/semagrow-*-tomcat-bundle.tar.gz semagrow-tomcat.tar.gz
 
+RUN    mkdir -p $SEMAGROW_HOME \
+    && tar zxvf semagrow-tomcat.tar.gz -C $SEMAGROW_HOME \
+    && rm semagrow-tomcat.tar.gz \
+    && mkdir -p /etc/default/semagrow \
+    && cp $SEMAGROW_HOME/resources/*.ttl /etc/default/semagrow
+
+WORKDIR $SEMAGROW_HOME
+ 
 EXPOSE 8080
-
-CMD cp_resources $SEMAGROW_HOME && catalina.sh run
+CMD [ "catalina.sh", "run" ]
