@@ -15,6 +15,7 @@ ENV CATALINA_HOME $SEMAGROW_HOME
 ENV PATH $CATALINA_HOME/bin:$PATH
 
 WORKDIR /
+
 COPY --from=build semagrow/assembly/target/semagrow-*-tomcat-bundle.tar.gz semagrow-tomcat.tar.gz
 
 RUN    mkdir -p $SEMAGROW_HOME \
@@ -26,4 +27,5 @@ RUN    mkdir -p $SEMAGROW_HOME \
 WORKDIR $SEMAGROW_HOME
  
 EXPOSE 8080
+
 CMD [ "catalina.sh", "run" ]

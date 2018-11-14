@@ -5,5 +5,5 @@ services:
   semagrow:                                                                                                                                                                                                                                  
     image: semagrow/semagrow                                                                                                                                                                                         
     volumes:                                                                                                                                                                                                                                 
-      - /path/to/config:/etc/default/semagrow
+      - /path/to/metadata.ttl:/etc/default/semagrow/metadata.ttl
 
