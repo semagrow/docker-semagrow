@@ -6,6 +6,7 @@ WORKDIR /
 
 RUN git clone https://github.com/semagrow/semagrow.git && \
     cd semagrow && \
+    git checkout devel-dare && \
     mvn clean package -P tomcat-bundle
 
 FROM openjdk:8-jre-alpine
